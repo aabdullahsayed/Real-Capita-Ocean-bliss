@@ -39,7 +39,7 @@ function Header() {
     { id: "about", label: "About Us" },
     { id: "rooms", label: "Rooms & Suites" },
     { id: "features", label: "Features" },
-    { id: "investment", label: "Investment", href: "Membership.html" },
+    { id: "investment", label: "Investment" },
     { id: "contact", label: "Contact" }
   ];
 
