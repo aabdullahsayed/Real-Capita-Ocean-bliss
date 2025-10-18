@@ -1,24 +1,30 @@
+import hero2 from '../assets/hero2.jpg'
+import hero1 from '../assets/hero1.jpg'
+import hero3 from '../assets/rec2.jpg'
+import hero4 from '../assets/hero4.jpg'
+import hero5 from '../assets/hero5@0.5x.jpg'
+
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 const slides = [
   {
-    type: "video",
-    src: "https://assets.mixkit.co/videos/preview/mixkit-ocean-waves-at-sunset-4075-large.mp4",
+    type: "image",
+    src: hero3,
     title: "Welcome to RC Ocean Bliss",
     subtitle: "Experience serenity and luxury on the stunning Kuakata Sea Beach.",
     buttonText: "Book Now",
   },
   {
     type: "image",
-    src: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80",
+    src: hero4,
     title: "Luxury Rooms & Suites",
     subtitle: "Comfort and elegance with breathtaking views.",
     buttonText: "Explore Rooms",
   },
   {
     type: "image",
-    src: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1920&q=80",
+    src: hero5,
     title: "Exclusive Beachside Features",
     subtitle: "Indulge in fine dining, spa, and adventure.",
     buttonText: "Discover More",

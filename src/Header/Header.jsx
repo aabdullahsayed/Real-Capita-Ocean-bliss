@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import logo from '../assets/logo.png'; // Assuming the logo is named logo.png in the assets folder
 
 function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -39,7 +40,7 @@ function Header() {
     { id: "about", label: "About Us" },
     { id: "rooms", label: "Rooms & Suites" },
     { id: "features", label: "Features" },
-    { id: "investment", label: "Investment" },
+    { id: "investment", label: "Investment", href: "./Game/Game.jsx" },
     { id: "contact", label: "Contact" }
   ];
 
@@ -83,7 +84,7 @@ function Header() {
             ease: "easeInOut"
           }}
         >
-          
+          <img src={logo} alt="Logo" className="logo-icon" />
         </motion.span>
         RC Ocean Bliss
       </motion.div>
@@ -249,6 +250,11 @@ function Header() {
           display: inline-block;
           font-size: 32px;
           line-height: 1;
+        }
+
+        .logo-icon {
+          height: 40px; /* Adjust size as needed */
+          width: auto;
         }
 
         nav {
