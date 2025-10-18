@@ -352,6 +352,13 @@ const ROI = () => {
             .roi-benefit-card:hover {
               transform: none !important;
             }
+			
+			@media (max-width: 640px) {
+  .roi-container {
+    /* ... existing styles ... */
+    overflow-x: hidden !important;
+  }
+}
           }
         `}
       </style>
