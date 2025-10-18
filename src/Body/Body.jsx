@@ -1,58 +1,99 @@
+
+
+import sg from '../assets/spa-gym.jpg'
+import res from '../assets/restaurent.jpg'
+import ssb from '../assets/saloon-sauna-barbar.jpg';
+import sp from '../assets/swimming-pool.jpg';
+import jb from '../assets/juice-bar.jpg';
+import pc from '../assets/party-center.jpg';
+
 import React, { useState, useEffect } from "react";
-import { FaBed, FaUtensils, FaSpa, FaSwimmingPool, FaGlassCheers, FaHotel, FaDumbbell, FaCocktail } from "react-icons/fa";
+import { FaBed, FaUtensils, FaSpa, FaSwimmingPool, FaGlassCheers, FaHotel, FaDumbbell, FaCocktail, FaTimes } from "react-icons/fa";
 
 const Body = () => {
   const [activeCard, setActiveCard] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [popupImage, setPopupImage] = useState(null);
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
+
+  // Close popup when pressing Escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        setPopupImage(null);
+      }
+    };
+    
+    if (popupImage) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [popupImage]);
 
   const sections = [
     {
       icon: <FaDumbbell />,
       title: "Spa & Gym",
       description: "State-of-the-art fitness center with premium equipment and rejuvenating spa treatments for complete wellness.",
-      image: "./spy-gym.jpg",
+      image: sg,
+      objectFit: "contain",
       gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
     },
     {
       icon: <FaUtensils />,
       title: "Fine Dining Restaurant",
       description: "Indulge in world-class cuisine prepared by expert chefs, offering both local flavors and international delights.",
-      image: "./restaurent.jpg",
+      image: res,
       gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
     },
     {
       icon: <FaSpa />,
       title: "Salon, Sauna & Barber",
       description: "Premium grooming and relaxation services with professional stylists and therapeutic sauna experiences.",
-      image: "./saloon-sauna-barbar.jpg",
+      image: ssb,
       gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
     },
     {
       icon: <FaSwimmingPool />,
       title: "Swimming Pool",
       description: "Luxurious infinity pool with breathtaking ocean views, perfect for relaxation and recreation.",
-      image: "./swimming-pool.jpg",
+      image: sp,
       gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
     },
     {
       icon: <FaCocktail />,
       title: "Juice Bar",
       description: "Fresh tropical juices, smoothies, and healthy refreshments to keep you energized throughout the day.",
-      image: "./juice-bar.jpg",
+      image: jb,
       gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
     },
     {
       icon: <FaGlassCheers />,
       title: "Party Center",
       description: "Elegant event spaces perfect for celebrations, weddings, and corporate gatherings with stunning ambiance.",
-      image: "./party-center.jpg",
+      image: pc,
       gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
     },
   ];
+
+  const handleImageClick = (image, e) => {
+    e.stopPropagation();
+    setPopupImage(image);
+  };
+
+  const closePopup = () => {
+    setPopupImage(null);
+  };
 
   return (
     <section style={styles.bodySection}>
@@ -82,10 +123,14 @@ const Body = () => {
             onMouseEnter={() => setActiveCard(index)}
             onMouseLeave={() => setActiveCard(null)}
           >
-            <div style={{
-              ...styles.imageContainer,
-              backgroundImage: `url(${sec.image})`,
-            }}>
+            <div 
+              style={{
+                ...styles.imageContainer,
+                backgroundImage: `url(${sec.image})`,
+                cursor: 'zoom-in',
+              }}
+              onClick={(e) => handleImageClick(sec.image, e)}
+            >
               <div style={{
                 ...styles.overlay,
                 background: sec.gradient,
@@ -112,6 +157,32 @@ const Body = () => {
           </div>
         ))}
       </div>
+
+      {/* Image Popup Modal */}
+      {popupImage && (
+        <div 
+          style={styles.popupOverlay}
+          onClick={closePopup}
+        >
+          <button 
+            style={styles.closeButton}
+            onClick={closePopup}
+            aria-label="Close popup"
+          >
+            <FaTimes />
+          </button>
+          <div 
+            style={styles.popupContent}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img 
+              src={popupImage} 
+              alt="Full size view" 
+              style={styles.popupImage}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Floating decoration */}
       <div style={styles.floatingDecor}>
@@ -286,7 +357,59 @@ const styles = {
     left: '-250px',
     animation: 'float 25s ease-in-out infinite reverse',
   },
+  // Popup styles
+  popupOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 9999,
+    padding: '20px',
+    animation: 'fadeIn 0.3s ease',
+    backdropFilter: 'blur(5px)',
+  },
+  popupContent: {
+    position: 'relative',
+    maxWidth: '90vw',
+    maxHeight: '90vh',
+    animation: 'zoomIn 0.3s ease',
+  },
+  popupImage: {
+    width: '100%',
+    height: '100%',
+    maxWidth: '90vw',
+    maxHeight: '90vh',
+    objectFit: 'contain',
+    borderRadius: '12px',
+    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: '20px',
+    right: '20px',
+    background: 'rgba(255, 255, 255, 0.2)',
+    backdropFilter: 'blur(10px)',
+    border: '2px solid rgba(255, 255, 255, 0.3)',
+    color: 'white',
+    width: '50px',
+    height: '50px',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '1.5rem',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    zIndex: 10000,
+  },
 };
+
+
 
 // Add CSS animations
 const styleSheet = document.createElement("style");
@@ -300,6 +423,26 @@ styleSheet.textContent = `
     }
     66% {
       transform: translate(-20px, 20px) rotate(240deg);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes zoomIn {
+    from {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
     }
   }
 
