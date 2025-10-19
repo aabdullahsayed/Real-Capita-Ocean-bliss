@@ -6,6 +6,12 @@ const ProjectLocation = () => {
   const [activeAttraction, setActiveAttraction] = useState(null);
 
   useEffect(() => {
+    // Load Inter font from Google Fonts
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
