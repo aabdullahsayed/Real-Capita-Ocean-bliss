@@ -7,8 +7,7 @@ import Body from './Body/Body.jsx'
 import ProjectDetails from './ProjectDetails/ProjectDetails.jsx';
 import ProjectLocation from './Location/ProjectLocation.jsx';
 import Membership from './Membership/Membership.jsx';
-import WhoWeAreSection
-import ROI from './ROI/ROI.jsx'
+import ROI from './ROI/ROI.jsx';
 import WhoWeAreSection from './AboutUs/WhoWeAreSection.jsx';
 function App() {
   return (
@@ -16,7 +15,7 @@ function App() {
       <Header />
       <Hero />
       <Body />
-<WhoAreWeSection />
+<WhoWeAreSection />
 	  <ROI />
       <ProjectDetails />
   
