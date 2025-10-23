@@ -43,14 +43,14 @@ const WhoWeAreSection = () => {
 
   const leadershipMessages = [
     {
-      role: 'Chairman, RCG',
+      role: 'Chairman',
       name: 'Manzur Ahmed Sohan',
       image: chairmanImg,
       message: 'At Real Capita Group, we don\'t just build structures; we create legacies. Our commitment to excellence and innovation has been the cornerstone of our success since 2017.',
       signature: 'Manzur Ahmed Sohan'
     },
     {
-      role: 'Managing Director, RCG',
+      role: 'Managing Director',
       name: 'Mohammad Arifuzzaman',
       image: mdImg,
       message: 'Quality is never an accident; it is always the result of intelligent effort. We take pride in delivering projects that exceed expectations and stand the test of time.',
@@ -391,7 +391,7 @@ const styles = {
   heroSection: {
     position: 'relative',
     background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
-    padding: '4rem 1.5rem',
+    padding: '6rem 1.5rem 4rem 1.5rem',
     overflow: 'hidden',
   },
   heroOverlay: {

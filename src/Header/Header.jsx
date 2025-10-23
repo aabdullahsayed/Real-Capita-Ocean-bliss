@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import React, { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import logo from '../assets/logo.png'; // Assuming the logo is named logo.png in the assets folder
@@ -35,14 +36,14 @@ function Header() {
     mouseY.set(e.clientY - rect.top);
   };
 
-  const navItems = [
-    { id: "home", label: "Home" },
-    { id: "about", label: "About Us" },
-    { id: "rooms", label: "Rooms & Suites" },
-    { id: "features", label: "Features" },
-    { id: "investment", label: "Investment", href: "./Game/Game.jsx" },
-    { id: "contact", label: "Contact" }
-  ];
+const navItems = [
+  { id: "home", label: "Home", to: "/" },
+  { id: "about", label: "About Us", to: "/about" },
+  { id: "rooms", label: "Rooms & Suites", to: "/rooms" },
+  { id: "features", label: "Features", to: "/features" },
+  { id: "investment", label: "Investment", to: "/investment" },
+  { id: "contact", label: "Contact", to: "/contact" }
+];
 
   return (
     <motion.header
@@ -108,28 +109,27 @@ function Header() {
           transition={{ delay: 0.4 }}
         >
           {navItems.map((item, index) => (
-            <motion.li
-              key={item.id}
-              initial={{ opacity: 0, y: -15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 + index * 0.08 }}
-            >
-              <motion.a
-                href={item.href || `#${item.id}`}
-                onClick={() => setActiveLink(item.id)}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {item.label}
-                {activeLink === item.id && (
-                  <motion.span
-                    className="active-indicator"
-                    layoutId="activeLink"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </motion.a>
-            </motion.li>
+            <motion.li key={item.id}>
+  <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+    <Link
+      to={item.to}
+      className={activeLink === item.id ? "active" : ""}
+      onClick={() => {
+        setActiveLink(item.id);
+        setMenuOpen(false);
+      }}
+    >
+      {item.label}
+      {activeLink === item.id && (
+        <motion.span
+          className="active-indicator"
+          layoutId="activeLink"
+          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+        />
+      )}
+    </Link>
+  </motion.div>
+</motion.li>
           ))}
           
           {/* Mobile CTA inside menu */}
