@@ -4,11 +4,21 @@ import { Facebook, Linkedin, Globe, Twitter, Github, Phone, MapPin, ChevronUp, M
 const Footer = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
 
+  // Effect for scroll-to-top button
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 300);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Effect for mobile responsiveness
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile(); // Check on initial render
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   const handleMouseMove = (e) => {
@@ -28,6 +38,7 @@ const Footer = () => {
     { icon: Twitter, href: 'https://x.com', label: 'Twitter' },
   ];
 
+  // --- UPDATED ---
   const offices = [
     {
       type: 'Sales Office',
@@ -40,8 +51,41 @@ const Footer = () => {
       address: ['House #05, Flat C-4 & C-5', 'Road 16 & 21, Gulshan-1', 'Dhaka-1212, Bangladesh'],
       phone: '+88-02-226600699',
       gradient: 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%)'
+    },
+    // --- NEW OFFICE ADDED ---
+    {
+      type: 'Sales Office (2)',
+      address: ['Level-18, Uday Tower', '51 Gulshan Avenue, Gulshan-1', 'Dhaka'],
+      phone: '+88-XXX-XXXXXX', // Placeholder phone
+      gradient: 'linear-gradient(135deg, #10b981 0%, #22c55e 50%, #84cc16 100%)'
     }
   ];
+
+  // Conditional styles based on isMobile state
+  const hotlineContentStyle = {
+    ...styles.hotlineContent,
+    padding: isMobile ? '1rem 1.5rem' : '1rem 2rem', 
+    flexDirection: isMobile ? 'column' : 'row',
+    gap: isMobile ? '0.25rem' : '1rem', 
+    textAlign: isMobile ? 'center' : 'left',
+  };
+
+  const hotlineIconStyle = {
+    ...styles.hotlineIcon,
+    width: isMobile ? '44px' : '48px', 
+    height: isMobile ? '44px' : '48px', 
+    position: 'relative',
+    zIndex: 1,
+  };
+
+  const hotlineLabelStyle = {
+    ...styles.hotlineLabel,
+  };
+
+  const hotlineNumStyle = {
+    ...styles.hotlineNumber,
+    fontSize: isMobile ? '1.25rem' : '1.5rem', 
+  };
 
   return (
     <footer style={styles.footer}>
@@ -51,13 +95,23 @@ const Footer = () => {
       <div style={styles.container}>
         {/* Hotline Section */}
         <div style={styles.hotlineSection}>
-          <div style={styles.hotlineContent}>
-            <div style={styles.hotlineIcon}>
-              <Phone size={32} strokeWidth={1.5} />
+          <div
+            style={hotlineContentStyle} 
+            onMouseMove={handleMouseMove} 
+            onMouseLeave={() => setMousePosition({ x: -1000, y: -1000 })} 
+          >
+            {/* Interactive Shine Effect */}
+            <div style={{
+              ...styles.shineEffect,
+              background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 255, 255, 0.1), transparent 40%)`,
+            }} />
+
+            <div style={hotlineIconStyle}> 
+              <Phone size={isMobile ? 20 : 24} strokeWidth={1.5} /> 
             </div>
-            <div>
-              <p style={styles.hotlineLabel}>24/7 Customer Support</p>
-              <h2 style={styles.hotlineNumber}>Hotline 10602</h2>
+            <div style={{ position: 'relative', zIndex: 1 }}> 
+              <p style={hotlineLabelStyle}>24/7 Customer Support</p> 
+              <h2 style={hotlineNumStyle}>Hotline 10602</h2> 
             </div>
           </div>
         </div>
@@ -236,22 +290,37 @@ const styles = {
     padding: '4rem 1.5rem 2rem',
   },
   hotlineSection: {
-    marginBottom: '4rem',
+    marginBottom: '3rem', 
     textAlign: 'center',
   },
   hotlineContent: {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: '1.5rem',
-    padding: '1.5rem 3rem',
+    gap: '1rem', 
+    padding: '1rem 2rem', 
     background: 'rgba(255, 255, 255, 0.03)',
     backdropFilter: 'blur(10px)',
     borderRadius: '100px',
     border: '1px solid rgba(255, 255, 255, 0.1)',
+    position: 'relative', 
+    overflow: 'hidden', 
+    transition: 'all 0.3s ease', 
+  },
+  shineEffect: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: '100px',
+    opacity: 1,
+    zIndex: 0,
+    pointerEvents: 'none',
+    transition: 'opacity 0.3s ease',
   },
   hotlineIcon: {
-    width: '60px',
-    height: '60px',
+    width: '48px', 
+    height: '48px', 
     borderRadius: '50%',
     background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
     display: 'flex',
@@ -260,14 +329,14 @@ const styles = {
     color: '#fff',
   },
   hotlineLabel: {
-    fontSize: '0.875rem',
+    fontSize: '0.8rem', 
     color: 'rgba(255, 255, 255, 0.6)',
     margin: '0 0 0.25rem 0',
     fontWeight: '400',
     letterSpacing: '0.5px',
   },
   hotlineNumber: {
-    fontSize: '2rem',
+    fontSize: '1.5rem', 
     margin: 0,
     fontWeight: '700',
     background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
@@ -328,11 +397,18 @@ const styles = {
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     border: '1px solid rgba(255, 255, 255, 0.1)',
   },
+  // --- UPDATED --- 
+  // Adjusted grid columns to better accommodate 3 items.
+  // 'span 2' was forcing the 3rd item to a new line and stretching.
+  // This new setup lets the grid auto-fit.
   officesGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
     gap: '1.5rem',
-    gridColumn: 'span 2',
+    gridColumn: '1 / -1', // Span full width on larger screens
+    '@media (minWidth: 768px)': { // On medium screens and up
+      gridColumn: 'span 2', // Allow it to take up its grid area
+    }
   },
   officeCard: {
     position: 'relative',
@@ -457,5 +533,22 @@ const styles = {
     zIndex: 1000,
   },
 };
+
+const keyframes = `
+@keyframes gradientFlow {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+`;
+
+const StyleInjector = () => <style>{keyframes}</style>;
+
+const FooterWithStyles = () => (
+  <>
+    <StyleInjector />
+    <Footer />
+  </>
+);
 
 export default Footer;
